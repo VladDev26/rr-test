@@ -5,16 +5,13 @@ import {loginRequest, logOut} from '../actions/';
 
 function Login ({ isLogged, loginRequest, logOut }){
 
-	const login = (
-		<button className="btn btn-secondary"
-			onClick={loginRequest}
-		>login</button>
-	);
-	const logout = (
-		<button className="btn btn-info"
-			onClick={logOut}
-		>logout</button>
-	);
+	function Button(style, click, text){
+		return <button className={style} onClick={click}>{text}</button>
+	}
+
+	const login = Button('btn btn-secondary', loginRequest, 'login');
+	const logout = Button('btn btn-info', logOut, 'logout');
+
 
 	return (
 		<div className="container py-4 text-right">
@@ -25,7 +22,7 @@ function Login ({ isLogged, loginRequest, logOut }){
 
 function mapStateToProps(state){
 	return {
-		isLogged: state.helloReducer.isLogged
+		isLogged: state.reducer.isLogged
 	}
 }
 function mapDispatchToProps(dispatch){

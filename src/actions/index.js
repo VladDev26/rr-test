@@ -4,13 +4,27 @@ import 'whatwg-fetch';
 import uuidV4 from 'uuid/v4';
 
 
-
 import AuthService from '../utils/AuthService';
 
 const authService = new AuthService(
 	'W4CE6HLNHm5ZSGcVGrN9Tfxi3uppWpHO', 
 	'vladdev.eu.auth0.com'
 );
+
+
+function makeUniqueID(arr){
+	return arr.map(item => {
+		item.id = uuidV4();
+		return item;
+	});
+}
+function setPerformance(data){
+	return {
+		type: 'SET_PERFORMANCE',
+		payload: data
+	}
+}
+
 
 export function checkAuth(boolean) {
   return {
@@ -35,53 +49,14 @@ export function loginRequest() {
   }
 }
 
-
-
-
-
-
-
-
-
-function makeUniqueID(arr){
-	return arr.map(item => {
-		item.id = uuidV4();
-		return item;
-	});
-}
-
-
-
-
-
-
-
-
-
-
-
-
-function fetchSmth(url){
-	return fetch(url).then(response => response.json())
-}
-
-
-
-function setPerformance(data){
-	return {
-		type: 'SET_PERFORMANCE',
-		payload: data
-	}
-}
-
-
-
 export function fetchPerformance(url){
-	return dispatch => fetchSmth(url)
+	return dispatch => fetch(url)
+		.then(response => response.json())
 		.then(data => dispatch(
-			setPerformance(makeUniqueID(data))
+				setPerformance(makeUniqueID(data))
+			)
 		)
-	);
+		.catch(() => dispatch(setPerformance([])));
 }
 
 export function toggleEditModalVisibility(boolean){
@@ -110,8 +85,6 @@ export function setElementToAdd(obj){
 	}
 }
 
-
-
 export function addItem(obj){
 	return {
 		type: 'ADD_ITEM',
@@ -127,7 +100,6 @@ export function saveEditedItem(performance, item){
 	
 }
 
-
 export function removeItem(performance, id){
 	const filtered = performance.filter(
 		el => id != el.id);
@@ -136,7 +108,6 @@ export function removeItem(performance, id){
 		setPerformance(filtered));
 }
 
-
 export function toggleLogged(boolean){
 	return {
 		type: 'TOGGLE_LOGGED',
@@ -144,28 +115,3 @@ export function toggleLogged(boolean){
 	}
 }
 
-
-
-
-// export function loginSuccess(error) {
-// 	console.log(error);
-// 	return {
-// 		type: 'TOGGLE_LOGGED',
-// 		payload: true
-// 	}
-// }
-// export function loginError(error) {
-// 	console.log(error);
-// 	return {
-// 		type: 'TOGGLE_LOGGED',
-// 		payload: false
-// 	}
-// }
-
-// export function checkLogin() {
-//   return dispatch => {
-//     authService.lock.on('authenticated', authResult => {
-//     	loginSuccess();
-//     })
-//   }
-// }

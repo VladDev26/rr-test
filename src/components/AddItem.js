@@ -29,8 +29,8 @@ function AddItem ({
 	}
 	
 	let button = (
-		<div className="container py-4">
-			<button className="btn btn-success" onClick={open}>+</button>
+		<div className="container text-right">
+			<button className="btn btn-success" onClick={open}>add</button>
 		</div>
 	);
 
@@ -51,13 +51,14 @@ function AddItem ({
 
 function mapStateToProps (store) {
 	return {
-		isAddModalVisible: store.helloReducer.isAddModalVisible,
-		elementToAdd: store.helloReducer.elementToAdd,
-		isLogged: store.helloReducer.isLogged
+		isAddModalVisible: store.reducer.isAddModalVisible,
+		elementToAdd: store.reducer.elementToAdd,
+		isLogged: store.reducer.isLogged
 	};
 }
 
 import { toggleAddModalVisibility, setElementToAdd, addItem } from '../actions';
+
 function mapDispatchToProps (dispatch) {
 	return {
 		setElementToAdd: obj => {dispatch(setElementToAdd(obj))},

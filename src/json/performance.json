@@ -2,16 +2,19 @@
 	{
 		"name": "Artist 1",
 		"place": "Place 1",
+		"text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo sit sequi commodi doloremque aspernatur",
 		"date": 1532280800000
 	},
 	{
 		"name": "Artist 2",
 		"place": "Place 2",
+		"text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo sit sequi commodi doloremque aspernatur",
 		"date": 1332280800000
 	},
 	{
 		"name": "Artist 3",
 		"place": "Place 3",
+		"text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo sit sequi commodi doloremque aspernatur",
 		"date": 1555570711111
 	}
 ]

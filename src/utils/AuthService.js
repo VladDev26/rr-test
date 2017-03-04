@@ -1,9 +1,6 @@
 // src/utils/AuthService.js
 
 import Auth0Lock from 'auth0-lock'
-// import { browserHistory } from 'react-router'
-
-// toggleLogged(this.getToken())
 
 export default class AuthService {
   constructor(clientId, domain) {
@@ -23,8 +20,6 @@ export default class AuthService {
   _doAuthentication(authResult) {
 	// Saves the user token
 	this.setToken(authResult.idToken)
-	// navigate to the home route
-	// browserHistory.replace('/home')
   }
 
   login() {

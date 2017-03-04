@@ -11,12 +11,13 @@ const initialState = {
 	elementToAdd: {
 		name: '...',
 		place: '...',
+		text: '...',
 		date: Date.now()
 	}
 };
 
-export function helloReducer(state = initialState, action) {
-	let {type, payload} = action;
+export default function(state = initialState, action) {
+	const {type, payload} = action;
 
 	switch (type) {
 		case 'SET_PERFORMANCE':

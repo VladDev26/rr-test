@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import Modal from './Modal';
 
-function Edit ({
+function EditItem ({
 	isEditModalVisible, 
 	toggleEditModalVisibility, 
 	elementToEdit, 
@@ -12,7 +12,7 @@ function Edit ({
 	setElementToEdit,
 }){
 
-	if(!isEditModalVisible || !elementToEdit) return null;
+	if(!isEditModalVisible) return null;
 	
 	function close(){
 		toggleEditModalVisibility(false);
@@ -36,9 +36,9 @@ function Edit ({
 
 function mapStateToProps (store) {
 	return {
-		isEditModalVisible: store.helloReducer.isEditModalVisible,
-		elementToEdit: store.helloReducer.elementToEdit,
-		performance: store.helloReducer.performance
+		isEditModalVisible: store.reducer.isEditModalVisible,
+		elementToEdit: store.reducer.elementToEdit,
+		performance: store.reducer.performance
 	};
 }
 
@@ -53,4 +53,4 @@ function mapDispatchToProps (dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Edit);
+export default connect(mapStateToProps, mapDispatchToProps)(EditItem);
