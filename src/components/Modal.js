@@ -4,40 +4,41 @@ import SetDate from './SetDate';
 
 function Modal ({setElement, element, save, close}){
 
-	let {name, place, date, text} = element;
 
-	function handleChange(e){
-		let val = e.target.value || '...';
-		let key = e.target.name;
-		setElement({...element, [key]: val});
+	function handleChange({ target: {value, name} }){
+		const isEmpty = !value.trim();
+		const val = isEmpty ? '...' : value;
+		
+		setElement({...element, [name]: val});
 	}
+	
 	function setDate(date){
-		let parsed = Date.parse(date._d);
+		const parsed = Date.parse(date._d);
 		setElement({...element, date: parsed});
 	}
 
-	function Input(defaultValue, name){
-		return <input type="text"
-					defaultValue={defaultValue}
-					onChange={handleChange}
-					name={name}
-					className="form-control"/>;
-	}
-
-	const nameInput = Input(name, 'name');
-	const placeInput = Input(place, 'place');
+	const {name, place, date, text} = element;
 
 	return (
 		<div className="mymodal">
 			<div className="mymodal__overlay">
 			<div className="container-fluid py-4 col-sm-6">
-				{nameInput}
-				{placeInput}
+				<input type="text"
+					defaultValue={name}
+					onChange={handleChange}
+					name={'name'}
+					className="form-control"/>
+				<input type="text"
+					defaultValue={place}
+					onChange={handleChange}
+					name={'place'}
+					className="form-control"/>
 
 				<textarea className="form-control"
 					defaultValue={text}
 					name='text' 
-					onChange={handleChange}></textarea>
+					onChange={handleChange}
+				></textarea>
 
 				<SetDate date={date} setDate={setDate} />
 				<div>

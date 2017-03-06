@@ -2,14 +2,36 @@ import Promise from 'promise-polyfill';
 if (!window.Promise) {window.Promise = Promise;}
 import 'whatwg-fetch';
 import uuidV4 from 'uuid/v4';
+import Auth0Lock from 'auth0-lock';
 
 
-import AuthService from '../utils/AuthService';
+export function setIsLogged(boolean) {
+  return {
+  	type: 'SET_IS_LOGGED',
+  	payload: boolean
+  }
+}
 
-const authService = new AuthService(
-	'W4CE6HLNHm5ZSGcVGrN9Tfxi3uppWpHO', 
-	'vladdev.eu.auth0.com'
-);
+const lock = new Auth0Lock('W4CE6HLNHm5ZSGcVGrN9Tfxi3uppWpHO', 'vladdev.eu.auth0.com');
+
+lock.on('authenticated', authenticate);
+
+function authenticate({idToken}){
+	localStorage.setItem('id_token', idToken);
+}
+
+
+export function showAuthModal() {
+	lock.show();
+	return {type: 'SHOW_AUTH_MODAL'};
+}
+
+export function logOut() {
+	localStorage.removeItem('id_token');
+	return dispatch => dispatch(
+		setIsLogged(false));
+}
+
 
 
 function makeUniqueID(arr){
@@ -18,35 +40,20 @@ function makeUniqueID(arr){
 		return item;
 	});
 }
-function setPerformance(data){
+function setPerformance(arr){
 	return {
 		type: 'SET_PERFORMANCE',
-		payload: data
+		payload: arr
 	}
 }
 
 
-export function checkAuth(boolean) {
-  return {
-  	type: 'TOGGLE_LOGGED',
-  	payload: boolean
-  }
-}
-
-
-export function logOut() {
-  authService.logout();
-  return {
-    type: 'TOGGLE_LOGGED',
-	payload: false
-  }
-}
-
-export function loginRequest() {
-  authService.login()
-  return {
-    type: 'LOGIN_REQUEST'
-  }
+export function saveEditedItem(performance, item){
+	return dispatch => {
+		dispatch(removeItem(performance, item.id));
+		dispatch(addItem(item));
+	}
+	
 }
 
 export function fetchPerformance(url){
@@ -92,13 +99,7 @@ export function addItem(obj){
 	}
 }
 
-export function saveEditedItem(performance, item){
-	return dispatch => {
-		dispatch(removeItem(performance, item.id));
-		dispatch(addItem(item));
-	}
-	
-}
+
 
 export function removeItem(performance, id){
 	const filtered = performance.filter(
@@ -106,12 +107,5 @@ export function removeItem(performance, id){
 
 	return dispatch => dispatch(
 		setPerformance(filtered));
-}
-
-export function toggleLogged(boolean){
-	return {
-		type: 'TOGGLE_LOGGED',
-		payload: boolean
-	}
 }
 

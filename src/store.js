@@ -6,8 +6,7 @@ import reducer from './reducers';
 
 const logger = createLogger();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const initialState = {};
-const store = configureStore(initialState);
+const store = configureStore({});
 
 
 function configureStore(initialState) {

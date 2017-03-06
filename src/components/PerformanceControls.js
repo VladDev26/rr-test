@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PerformanceControls({edit, remove}){
+export default function ({edit, remove}){
 	return(
 		<div className="row">
 			<div className="col text-left">

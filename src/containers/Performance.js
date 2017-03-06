@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import path from 'path';
 
 import PerformanceItem from '../components/PerformanceItem';
+import NoItems from '../components/NoItems';
+
 
 const myurl = path.resolve(__dirname + 'src/json/performance.json');
 
@@ -13,37 +15,29 @@ class Performance extends Component{
 	}
 
 	render(){
-		const {performance, 
-			removeItem, 
-			isLogged, 
-			toggleEditModalVisibility, 
-			setElementToEdit} = this.props;
+		const {
+			performance, removeItem, isLogged, 
+			toggleEditModalVisibility, setElementToEdit
+		} = this.props;
 
 
-		if(!performance.length) {
-			return (
-				<div className="container py-4">
-					<p>No items...</p>
-				</div>
-			);
-		}
+		if(!performance.length) return <NoItems />;
+
 
 		const item = performance.map(el => {
-			let date = new Date(el.date).toLocaleDateString();
-
+			const id = el.id;
+			
 			function handleEdit(){
 				toggleEditModalVisibility(true);
-				setElementToEdit(el, el.id);
+				setElementToEdit(el, id);
 			}
 			function handleRemove(){
-				removeItem(performance, el.id);
+				removeItem(performance, id);
 			}
 
 			return(
-				<PerformanceItem 
-					key={el.id}
+				<PerformanceItem key={id}
 					el={el} 
-					date={date} 
 					edit={handleEdit} 
 					isLogged={isLogged} 
 					remove={handleRemove} />
@@ -59,11 +53,21 @@ class Performance extends Component{
 }
 
 
-function mapStateToProps (state) {
-	console.log(state);
+Performance.propTypes = {
+	fetchPerformance: PropTypes.func.isRequired,
+	removeItem: PropTypes.func.isRequired,
+	toggleEditModalVisibility: PropTypes.func.isRequired,
+	setElementToEdit: PropTypes.func.isRequired,
+
+	performance: PropTypes.arrayOf(PropTypes.object).isRequired,
+	isLogged: PropTypes.bool.isRequired
+}
+
+
+function mapStateToProps ({reducer}) {
 	return {
-		performance: state.reducer.performance,
-		isLogged: state.reducer.isLogged,
+		performance: reducer.performance,
+		isLogged: reducer.isLogged,
 	};
 }
 

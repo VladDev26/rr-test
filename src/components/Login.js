@@ -1,35 +1,25 @@
 import {connect} from 'react-redux';
 import React from 'react';
 
-import {loginRequest, logOut} from '../actions/';
 
-function Login ({ isLogged, loginRequest, logOut }){
+export default function(props) {
+	const { isLogged, showAuthModal, logOut } = props.state;
 
-	function Button(style, click, text){
-		return <button className={style} onClick={click}>{text}</button>
-	}
-
-	const login = Button('btn btn-secondary', loginRequest, 'login');
-	const logout = Button('btn btn-info', logOut, 'logout');
-
+	const pleaseLogin = (
+		<div className="alert alert-info d-inline-block">
+			Please 
+  			<a href="#" className="alert-link px-2" onClick={showAuthModal}>login</a> 
+  			to manage the list
+		</div>
+	);
 
 	return (
 		<div className="container py-4 text-right">
-			{isLogged ? logout : login}
+			{
+				isLogged ?
+				<button className='btn btn-info' onClick={logOut}>logout</button> :
+				pleaseLogin
+			}
 		</div>
 	);
 }
-
-function mapStateToProps(state){
-	return {
-		isLogged: state.reducer.isLogged
-	}
-}
-function mapDispatchToProps(dispatch){
-	return {
-		loginRequest: () => {dispatch(loginRequest())},
-		logOut: () => {dispatch(logOut())}
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);

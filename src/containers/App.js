@@ -1,40 +1,66 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
 import Performance from './Performance';
-import EditItem from '../components/EditItem';
-import AddItem from '../components/AddItem';
+import EditItem from './EditItem';
+import AddItem from './AddItem';
 import Login from '../components/Login';
+
 
 
 class App extends Component{
 
 	componentDidMount(){
 		setTimeout(() => {
-			this.props.checkAuth(!!localStorage.getItem('id_token'));
+			this.props.setIsLogged(!!localStorage.getItem('id_token'));
 		}, 500);
 	}
 
 	render(){
+		const state = this.props;
+		
 		return(
 			<div className="wrapper">
-				<Login auth={this.props.auth} />
-				<AddItem />
+				<Login state={state} />
+				<AddItem state={state} />
 				<Performance />
-				<EditItem />
+				<EditItem state={state} />
 			</div>
 		);
 	}
 }
 
 
-import { checkAuth } from '../actions';
+App.propTypes = {
+	setIsLogged: PropTypes.func.isRequired,
+	showAuthModal: PropTypes.func.isRequired,
+	logOut: PropTypes.func.isRequired,
+
+	performance: PropTypes.arrayOf(
+		PropTypes.object).isRequired,
+	isLogged: PropTypes.bool.isRequired,
+
+	isEditModalVisible: PropTypes.bool.isRequired,
+	isAddModalVisible: PropTypes.bool.isRequired,
+
+	elementToEdit: PropTypes.object.isRequired,
+	elementToAdd: PropTypes.object.isRequired
+}
+
+
+function mapStateToProps({reducer}){
+	return {...reducer};
+}
+
+import * as act from '../actions';
 
 function mapDispatchToProps (dispatch) {
 	return {
-		checkAuth: boolean => { dispatch(checkAuth(boolean)) }
+		setIsLogged: boolean => { dispatch( act.setIsLogged(boolean) ) },
+		showAuthModal: () => { dispatch( act.showAuthModal() ) },
+		logOut: () => { dispatch( act.logOut() ) }
 	};
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

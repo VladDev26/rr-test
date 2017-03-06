@@ -7,7 +7,7 @@ const initialState = {
 	isEditModalVisible: false,
 	isAddModalVisible: false,
 
-	elementToEdit: null,
+	elementToEdit: {},
 	elementToAdd: {
 		name: '...',
 		place: '...',
@@ -41,7 +41,7 @@ export default function(state = initialState, action) {
 			return {...state, elementToAdd: payload};
 
 
-		case 'TOGGLE_LOGGED':
+		case 'SET_IS_LOGGED':
 			return {...state, isLogged: payload};
 			
 		default:
